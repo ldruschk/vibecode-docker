@@ -1,0 +1,17 @@
+services:
+  vibecode:
+    image: ghcr.io/ldruschk/vibecode-docker:latest
+    container_name: vibecode
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      - ./.credentials/.ssh:/home/vibecode/.ssh
+      - ./.credentials/age-keys.txt:/home/vibecode/.config/sops/age/keys.txt
+      - ${OPENCODE_CONFIG_DIR:-/home/lucas/.config/opencode}:/home/vibecode/.config/opencode
+      - ${OPENCODE_DATA_DIR:-/home/lucas/.local/share/opencode}:/home/vibecode/.local/share/opencode
+      - ${OPENCODE_STATE_DIR:-/home/lucas/.local/state/opencode}:/home/vibecode/.local/state/opencode
+    environment:
+      - TERM=${TERM:-xterm-256color}
+      - COLORTERM=${COLORTERM:-truecolor}
+    stdin_open: true
+    tty: true

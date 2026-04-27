@@ -6,26 +6,37 @@ Arch Linux based Docker image for the [Opencode CLI](https://github.com/anomalyc
 
 ## Usage
 
-### docker-compose.yml (example)
+### Portable usage (recommended)
 
-```yaml
-services:
-  vibecode:
-    image: ghcr.io/ldruschk/vibecode-docker:latest
-    container_name: vibecode
-    working_dir: /workspace
-    volumes:
-      - .:/workspace
-      - ./.credentials/.ssh:/home/vibecode/.ssh
-      - ./.credentials/age-keys.txt:/home/vibecode/.config/sops/age/keys.txt
-      - /home/user/.config/opencode:/home/vibecode/.config/opencode
-      - /home/user/.local/share/opencode:/home/vibecode/.local/share/opencode
-      - /home/user/.local/state/opencode:/home/vibecode/.local/state/opencode
-    environment:
-      - TERM=${TERM:-xterm-256color}
-      - COLORTERM=${COLORTERM:-truecolor}
-    stdin_open: true
-    tty: true
+Clone this repo once, then add a shell function to your `~/.bashrc` or `~/.zshrc`:
+
+```bash
+export VIBECODE_DOCKER_DIR="$HOME/Documents/prog/vibecode-docker"
+
+vibecode() {
+  OPENCODE_CONFIG_DIR="$HOME/.config/opencode" \
+  OPENCODE_DATA_DIR="$HOME/.local/share/opencode" \
+  OPENCODE_STATE_DIR="$HOME/.local/state/opencode" \
+  sudo docker compose -f "$VIBECODE_DOCKER_DIR/docker-compose.yml" \
+    --project-directory "$PWD" \
+    run --rm vibecode opencode "$@"
+}
+```
+
+Now from any project directory, just run:
+
+```bash
+vibecode
+```
+
+The `--project-directory .` ensures relative volume mounts (`.`, `.credentials/`) resolve against your current project, while the compose file lives in one central place.
+
+### docker-compose.yml (for reference)
+
+The canonical compose file lives in this repo at [`docker-compose.yml`](docker-compose.yml). You can also use it directly without the shell function:
+
+```bash
+sudo docker compose -f /path/to/vibecode-docker/docker-compose.yml --project-directory . run --rm vibecode opencode
 ```
 
 ### .gitignore (example)
@@ -107,10 +118,14 @@ age -d .credentials/age-keys.txt </dev/null 2>&1 | head -1
 
 ## Run
 
-Start an interactive opencode session from your VS Code terminal:
+Start an interactive opencode session from any project directory:
 
 ```bash
-docker compose run --rm vibecode opencode
+# If you set up the shell function (recommended):
+vibecode
+
+# Or directly:
+sudo docker compose -f /path/to/vibecode-docker/docker-compose.yml --project-directory . run --rm vibecode opencode
 ```
 
 This mounts your current project directory, makes `.credentials/` available, and launches opencode inside the container with persisted auth and sessions. Exit with Ctrl+C to stop and remove the container.
