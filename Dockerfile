@@ -43,5 +43,11 @@ RUN curl -fsSL https://opencode.ai/install | sh && \
     chmod +x /usr/local/bin/crane && \
     rm -rf /tmp/*
 
+RUN mkdir -p /home/vibecode/.config/sops/age \
+    /home/vibecode/.local/share/opencode \
+    /home/vibecode/.local/state/opencode \
+    /home/vibecode/.ssh && \
+    chown -R vibecode:vibecode /home/vibecode
+
 WORKDIR /workspace
 USER vibecode
