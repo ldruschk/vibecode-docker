@@ -18,6 +18,7 @@ services:
       - .:/workspace
       - ./.credentials/.ssh:/home/vibecode/.ssh
       - ./.credentials/age-keys.txt:/home/vibecode/.config/sops/age/keys.txt
+      - /home/user/.config/opencode:/home/vibecode/.config/opencode
       - /home/user/.local/share/opencode:/home/vibecode/.local/share/opencode
       - /home/user/.local/state/opencode:/home/vibecode/.local/state/opencode
     environment:
