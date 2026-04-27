@@ -28,17 +28,17 @@ RUN pacman -Syu --noconfirm && \
         go \
         openssl \
         direnv \
-    && pacman -Scc --noconfirm
-
-RUN useradd -m -G wheel -s /bin/bash vibecode && \
+    && pacman -Scc --noconfirm && \
+    rm -rf /var/cache/pacman/pkg/* /tmp/* /var/log/* && \
+    useradd -m -G wheel -s /bin/bash vibecode && \
     echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-RUN OPENCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://opencode.ai/install | sh
-
 ARG CRANE_VERSION=v0.21.5
-RUN curl -fsSL "https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/go-containerregistry_Linux_x86_64.tar.gz" \
+RUN OPENCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://opencode.ai/install | sh && \
+    curl -fsSL "https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/go-containerregistry_Linux_x86_64.tar.gz" \
     | tar -xz -C /usr/local/bin/ crane && \
-    chmod +x /usr/local/bin/crane
+    chmod +x /usr/local/bin/crane && \
+    rm -rf /tmp/*
 
 WORKDIR /workspace
 USER vibecode
