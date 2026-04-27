@@ -15,7 +15,7 @@ RUN pacman -Syu --noconfirm && \
         kubectl \
         helm \
         kustomize \
-        gh \
+        github-cli \
         nodejs \
         npm \
         python \
