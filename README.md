@@ -50,7 +50,7 @@ sudo docker compose -f /path/to/vibecode-docker/docker-compose.yml --project-dir
 
 A [pre-commit hook](githooks/pre-commit) is bundled in this repo. It scans every staged file for credential values (AGE keys, SSH private keys, tokens) found in `.credentials/` and blocks the commit if any match.
 
-Install it into your project:
+Install it into your project (the hook binary **must** live under `.git/hooks/` for Git to run it):
 
 ```bash
 cp /path/to/vibecode-docker/githooks/pre-commit /path/to/your/project/.git/hooks/pre-commit
