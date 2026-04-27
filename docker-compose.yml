@@ -10,6 +10,7 @@ services:
       - ${OPENCODE_CONFIG_DIR:-/home/lucas/.config/opencode}:/home/vibecode/.config/opencode
       - ${OPENCODE_DATA_DIR:-/home/lucas/.local/share/opencode}:/home/vibecode/.local/share/opencode
       - ${OPENCODE_STATE_DIR:-/home/lucas/.local/state/opencode}:/home/vibecode/.local/state/opencode
+      - ${GITCONFIG:-/home/lucas/.gitconfig}:/home/vibecode/.gitconfig:ro
     environment:
       - TERM=${TERM:-xterm-256color}
       - COLORTERM=${COLORTERM:-truecolor}

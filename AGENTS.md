@@ -42,6 +42,13 @@ docker compose run --rm vibecode opencode
 | `/home/user/.config/opencode` | `~/.config/opencode` | OpenCode config, themes, keybinds |
 | `/home/user/.local/share/opencode` | `~/.local/share/opencode` | Auth, sessions |
 | `/home/user/.local/state/opencode` | `~/.local/state/opencode` | Logs, state |
+| `/home/user/.gitconfig` | `~/.gitconfig:ro` | Git identity (persists across restarts) |
+
+To persist git identity, add to your `docker-compose.yml`:
+```yaml
+volumes:
+  - /home/user/.gitconfig:/home/vibecode/.gitconfig:ro
+```
 
 ## Image Details
 
@@ -50,7 +57,7 @@ docker compose run --rm vibecode opencode
 - **Workdir**: `/workspace`
 - **opencode**: installed to `/usr/local/bin/opencode` via official install script
 - **crane**: downloaded from `google/go-containerregistry` releases to `/usr/local/bin/crane`
-- **Packages**: age, base-devel, git, curl, wget, openssh, gnupg, sudo, jq, go-yq, kubectl, helm, kustomize, github-cli, nodejs, npm, python, uv, ripgrep, fzf, tmux, vim, unzip, go, openssl, direnv
+- **Packages**: age, base-devel, git, curl, wget, openssh, gnupg, sudo, jq, go-yq, kubectl, helm, kustomize, github-cli, nodejs, npm, python, uv, ripgrep, fzf, tmux, vim, unzip, go, openssl, sops, direnv
 - **Dockerfile patterns**:
   - Install script ignores `OPENCODE_INSTALL_DIR` — must `mv` binary from `/root/.opencode/bin` to `/usr/local/bin`
   - File mounts into `~/.config/sops/age/` require pre-creating the directory tree owned by `vibecode` to prevent Docker from creating it as root (which blocks opencode from writing to `~/.config/opencode`)

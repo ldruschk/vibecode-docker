@@ -14,6 +14,7 @@ Clone this repo once, then add a shell function to your `~/.bashrc` or `~/.zshrc
 export VIBECODE_DOCKER_DIR="$HOME/Documents/prog/vibecode-docker"
 
 vibecode() {
+  GITCONFIG="$HOME/.gitconfig" \
   OPENCODE_CONFIG_DIR="$HOME/.config/opencode" \
   OPENCODE_DATA_DIR="$HOME/.local/share/opencode" \
   OPENCODE_STATE_DIR="$HOME/.local/state/opencode" \
