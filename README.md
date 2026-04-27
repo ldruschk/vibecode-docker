@@ -75,7 +75,11 @@ ssh-keygen -t ed25519 -f .credentials/.ssh/id_ed25519 -N "" -C "deploy-key@<owne
 2. **Token name**: `deploy-key-manager`
 3. **Repository access**: Only select repositories → choose your repo
 4. **Permissions** → Repository permissions:
-   - Administration: **Write** (needed to manage deploy keys)
+   - Administration: **Write** (manage deploy keys)
+   - Pull requests: **Write** (manage PRs)
+   - Actions: **Read** (check CI runs)
+   - Issues: **Read** (view issues)
+   - Contents: **Read** (clone, inspect files)
 5. Click **Generate token**
 6. Copy the token into `.credentials/github-token`:
 
