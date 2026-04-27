@@ -9,3 +9,9 @@
 - Created `README.md` with usage examples, build instructions, and tool listing.
 - Created `AGENTS.md` with project overview and instructions for AI agents.
 - Created `AI-CHANGELOG.md` to track AI-assisted changes.
+
+## 2026-04-27 — Add age, document `.credentials/` layout
+
+- Added `age` package to Dockerfile.
+- Updated docker-compose example: mount `.credentials/.ssh/` → `~/.ssh` and `.credentials/age-keys.txt` → `~/.config/sops/age/keys.txt`.
+- Documented `.credentials/` directory structure in README.

@@ -16,8 +16,10 @@ services:
     working_dir: /workspace
     volumes:
       - .:/workspace
-      - /home/lucas/.local/share/opencode:/home/vibecode/.local/share/opencode
-      - /home/lucas/.local/state/opencode:/home/vibecode/.local/state/opencode
+      - ./.credentials/.ssh:/home/vibecode/.ssh
+      - ./.credentials/age-keys.txt:/home/vibecode/.config/sops/age/keys.txt
+      - /home/user/.local/share/opencode:/home/vibecode/.local/share/opencode
+      - /home/user/.local/state/opencode:/home/vibecode/.local/state/opencode
     environment:
       - TERM=${TERM:-xterm-256color}
       - COLORTERM=${COLORTERM:-truecolor}
@@ -33,7 +35,21 @@ services:
 
 ## Credentials
 
-Place SSH keys, kube-configs, and other credentials in `.credentials/` at the project root. This folder is excluded from Git.
+Place credentials in `.credentials/` at the project root. This folder is excluded from Git.
+
+```
+.credentials/
+  .ssh/
+    id_ed25519          # SSH private key (deploy key)
+    id_ed25519.pub      # SSH public key
+    config              # SSH config (auto-uses key for github.com)
+    known_hosts         # Generated on first SSH connection
+  age-keys.txt          # AGE private key (for SOPS decryption)
+```
+
+Mount points:
+- `.credentials/.ssh/` → `~/.ssh/` — SSH keys for git push
+- `.credentials/age-keys.txt` → `~/.config/sops/age/keys.txt` — AGE key for SOPS
 
 ## Run
 
