@@ -16,7 +16,8 @@ services:
     working_dir: /workspace
     volumes:
       - .:/workspace
-      - ~/.config/opencode:/home/vibecode/.config/opencode
+      - /home/lucas/.local/share/opencode:/home/vibecode/.local/share/opencode
+      - /home/lucas/.local/state/opencode:/home/vibecode/.local/state/opencode
     environment:
       - TERM=${TERM:-xterm-256color}
       - COLORTERM=${COLORTERM:-truecolor}
@@ -42,7 +43,7 @@ Start an interactive opencode session from your VS Code terminal:
 docker compose run --rm vibecode opencode
 ```
 
-This mounts your current project directory, makes `.credentials/` available, and launches opencode inside the container. Exit the session with Ctrl+C to stop and remove the container.
+This mounts your current project directory, makes `.credentials/` available, and launches opencode inside the container with persisted auth and sessions. Exit with Ctrl+C to stop and remove the container.
 
 ## Build
 
