@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Pre-commit hook: rejects commits that would publish secret values
+# from the .credentials directory into tracked files.
+
+CREDENTIALS_DIR=".credentials"
+
+if [ ! -d "$CREDENTIALS_DIR" ]; then
+    exit 0
+fi
+
+PATTERNS=$(mktemp)
+trap 'rm -f "$PATTERNS"' EXIT
+
+# Collect non-empty, non-comment lines from every text file under .credentials/
+while IFS= read -r f; do
+    if file "$f" | grep -q "text"; then
+        grep -v '^\s*#' "$f" | grep -v '^\s*$' >> "$PATTERNS"
+    fi
+done < <(find "$CREDENTIALS_DIR" -type f)
+
+# Also detect well-known key headers (multi-line keys like SSH)
+echo "-----BEGIN OPENSSH PRIVATE KEY-----" >> "$PATTERNS"
+echo "-----BEGIN AGE ENCRYPTED FILE-----" >> "$PATTERNS"
+
+sort -u "$PATTERNS" -o "$PATTERNS"
+
+VIOLATIONS=0
+
+while IFS= read -r file; do
+    [ -z "$file" ] && continue
+    if ! git show ":${file}" > /dev/null 2>&1; then
+        continue
+    fi
+    while IFS= read -r pattern; do
+        [ -z "$pattern" ] && continue
+        if git show ":${file}" | grep -qF "$pattern" 2>/dev/null; then
+            echo "ERROR: staged file '$file' contains value from $CREDENTIALS_DIR" >&2
+            VIOLATIONS=$((VIOLATIONS + 1))
+            break
+        fi
+    done < "$PATTERNS"
+done < <(git diff --cached --name-only --diff-filter=ACMR)
+
+if [ "$VIOLATIONS" -gt 0 ]; then
+    echo "COMMIT REJECTED: $VIOLATIONS file(s) contain potential secrets." >&2
+    exit 1
+fi

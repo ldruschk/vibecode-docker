@@ -46,6 +46,27 @@ sudo docker compose -f /path/to/vibecode-docker/docker-compose.yml --project-dir
 .credentials/
 ```
 
+### Pre-commit hook (recommended)
+
+A [pre-commit hook](githooks/pre-commit) is bundled in this repo. It scans every staged file for credential values (AGE keys, SSH private keys, tokens) found in `.credentials/` and blocks the commit if any match.
+
+Install it into your project:
+
+```bash
+cp /path/to/vibecode-docker/githooks/pre-commit /path/to/your/project/.git/hooks/pre-commit
+chmod +x /path/to/your/project/.git/hooks/pre-commit
+```
+
+Or, to track the hook in your own project's repo (recommended for teams):
+
+```bash
+mkdir -p githooks
+cp /path/to/vibecode-docker/githooks/pre-commit githooks/pre-commit
+chmod +x githooks/pre-commit
+git config core.hooksPath githooks
+# Commit the githooks/ directory
+```
+
 ## Credentials
 
 Place credentials in `.credentials/` at the project root. This folder is excluded from Git.
