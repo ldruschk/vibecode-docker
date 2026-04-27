@@ -16,6 +16,7 @@ RUN pacman -Syu --noconfirm && \
         helm \
         kustomize \
         github-cli \
+        hcloud \
         nodejs \
         npm \
         python \
