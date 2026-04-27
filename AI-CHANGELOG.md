@@ -31,3 +31,25 @@
 - Added repository initialization section to README: generate AGE key, SSH deploy key, create fine-grained PAT, add deploy key via `gh`.
 - Documented required fine-grained PAT permissions: Administration (Write), Pull requests (Write), Actions (Read), Issues (Read), Contents (Read).
 - Added `github-token` to `.credentials/` layout.
+
+## 2026-04-27 — Portable docker-compose with dynamic env var paths
+
+- Moved `docker-compose.yml` from README example into its own file in the repo root.
+- Replaced hardcoded `/home/user/...` paths with `${VAR:-default}` env vars (`OPENCODE_CONFIG_DIR`, `OPENCODE_DATA_DIR`, `OPENCODE_STATE_DIR`, `GITCONFIG`).
+- Added shell function snippet to README for portable usage — users add `vibecode()` to `.bashrc`/`.zshrc` that passes env vars from `$HOME` and uses `--project-directory "$PWD"`.
+- Documented three usage options: shell function, `-f` + `--project-directory`, and symlink.
+
+## 2026-04-27 — Add hetzner-k3s and sops binaries
+
+- Added `hetzner-k3s-linux-amd64` download from GitHub releases to Dockerfile.
+- Added `sops` package to Dockerfile.
+
+## 2026-04-27 — Patch opencode binary continue suggestion
+
+- Added `sed -i 's/opencode -s/vibecode -s/g'` to Dockerfile to replace the continue command in opencode's output so it displays `vibecode -s <id>` instead of `opencode -s <id>`. Same-length byte replacement is safe on compiled binaries.
+
+## 2026-04-27 — Add GITCONFIG volume mount, document sops
+
+- Added `${GITCONFIG:-/home/lucas/.gitconfig}` volume mount to docker-compose.yml.
+- Added `GITCONFIG="$HOME/.gitconfig"` to the shell function in README.
+- Added `.gitconfig` mount docs and `sops` to package list in AGENTS.md.
