@@ -16,7 +16,7 @@ services:
     working_dir: /workspace
     volumes:
       - .:/workspace
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.config/opencode:/home/vibecode/.config/opencode
     environment:
       - TERM=${TERM:-xterm-256color}
       - COLORTERM=${COLORTERM:-truecolor}
