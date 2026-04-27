@@ -28,6 +28,7 @@ RUN pacman -Syu --noconfirm && \
         go \
         openssl \
         age \
+        sops \
         direnv \
     && pacman -Scc --noconfirm && \
     rm -rf /var/cache/pacman/pkg/* /tmp/* /var/log/* && \
