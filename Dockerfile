@@ -16,7 +16,6 @@ RUN pacman -Syu --noconfirm && \
         helm \
         kustomize \
         github-cli \
-        hcloud \
         nodejs \
         npm \
         python \
@@ -38,6 +37,7 @@ RUN pacman -Syu --noconfirm && \
     echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 ARG CRANE_VERSION=v0.21.5
+ARG HCLOUD_VERSION=v1.64.1
 ARG HETZNER_K3S_VERSION=v2.4.9
 RUN curl -fsSL https://opencode.ai/install | sh && \
     mv /root/.opencode/bin/opencode /usr/local/bin/opencode && \
@@ -46,6 +46,9 @@ RUN curl -fsSL https://opencode.ai/install | sh && \
     curl -fsSL "https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/go-containerregistry_Linux_x86_64.tar.gz" \
     | tar -xz -C /usr/local/bin/ crane && \
     chmod +x /usr/local/bin/crane && \
+    curl -fsSL "https://github.com/hetznercloud/cli/releases/download/${HCLOUD_VERSION}/hcloud-linux-amd64.tar.gz" \
+    | tar -xz -C /usr/local/bin/ hcloud && \
+    chmod +x /usr/local/bin/hcloud && \
     curl -fsSL "https://github.com/vitobotta/hetzner-k3s/releases/download/${HETZNER_K3S_VERSION}/hetzner-k3s-linux-amd64" \
     -o /usr/local/bin/hetzner-k3s && \
     chmod +x /usr/local/bin/hetzner-k3s && \
