@@ -29,6 +29,7 @@ RUN pacman -Syu --noconfirm && \
         go \
         openssl \
         age \
+        argocd \
         sops \
         direnv \
     && pacman -Scc --noconfirm && \
