@@ -55,6 +55,7 @@ RUN mkdir -p /home/vibecode/.config/sops/age \
     /home/vibecode/.local/share/opencode \
     /home/vibecode/.local/state/opencode \
     /home/vibecode/.ssh && \
+    echo 'eval "$(direnv hook bash)"' >> /home/vibecode/.bashrc && \
     chown -R vibecode:vibecode /home/vibecode
 
 WORKDIR /workspace
