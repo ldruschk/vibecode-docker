@@ -5,9 +5,8 @@ vibecode() {
   [ -f .credentials/AGENTS.md ] || cat > .credentials/AGENTS.md <<'EOF'
 # Credentials
 
-- `.ssh/` — SSH deploy key for git push
-- `age-keys.txt` — AGE private key for SOPS
-- `github-token` — GitHub PAT for gh CLI
+Agent: generate `id_ed25519` key pair and `age-keys.txt` yourself.
+User: provide `github-token` (PAT) if needed. Insert deploy key into repo with write access. Place `age-keys.txt` wherever secrets need decryption.
 EOF
   GITCONFIG="$HOME/.gitconfig" \
   OPENCODE_CONFIG_DIR="$HOME/.config/opencode" \
