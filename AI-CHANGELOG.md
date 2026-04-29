@@ -53,3 +53,9 @@
 - Added `${GITCONFIG:-/home/lucas/.gitconfig}` volume mount to docker-compose.yml.
 - Added `GITCONFIG="$HOME/.gitconfig"` to the shell function in README.
 - Added `.gitconfig` mount docs and `sops` to package list in AGENTS.md.
+
+## 2026-04-29 — Canonical function file + install script
+
+- Created `vibecode-function.sh` as the single source of truth for the `vibecode()` shell function.
+- Created `install-vibecode-function.sh` which reads the canonical definition and inserts/updates it in `~/.zshrc` between marker comments.
+- Replaced duplicated inline function bodies in README and AGENTS.md with references to the install script.

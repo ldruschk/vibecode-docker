@@ -8,31 +8,14 @@ Arch Linux based Docker image for the [Opencode CLI](https://github.com/anomalyc
 
 ### Portable usage (recommended)
 
-Clone this repo once, then add a shell function to your `~/.bashrc` or `~/.zshrc`:
+Clone this repo once, then install the `vibecode()` shell function into `~/.zshrc`:
 
 ```bash
-export VIBECODE_DOCKER_DIR="$HOME/Documents/prog/vibecode-docker"
-
-vibecode() {
-  mkdir -p .credentials .credentials/.ssh
-  [ -f .credentials/age-keys.txt ] || touch .credentials/age-keys.txt
-  [ -f .credentials/github-token ] || touch .credentials/github-token
-  [ -f .credentials/AGENTS.md ] || cat > .credentials/AGENTS.md <<'EOF'
-# Credentials
-
-- `.ssh/` — SSH deploy key for git push
-- `age-keys.txt` — AGE private key for SOPS
-- `github-token` — GitHub PAT for gh CLI
-EOF
-  GITCONFIG="$HOME/.gitconfig" \
-  OPENCODE_CONFIG_DIR="$HOME/.config/opencode" \
-  OPENCODE_DATA_DIR="$HOME/.local/share/opencode" \
-  OPENCODE_STATE_DIR="$HOME/.local/state/opencode" \
-  sudo docker compose -f "$VIBECODE_DOCKER_DIR/docker-compose.yml" \
-    --project-directory "$PWD" \
-    run --rm vibecode opencode "$@"
-}
+/path/to/vibecode-docker/install-vibecode-function.sh
+exec zsh
 ```
+
+This reads the canonical definition from [`vibecode-function.sh`](vibecode-function.sh) and auto-resolves the compose file path. Run it again after updating the repo to sync changes.
 
 Now from any project directory, just run:
 
@@ -40,7 +23,7 @@ Now from any project directory, just run:
 vibecode
 ```
 
-The `--project-directory .` ensures relative volume mounts (`.`, `.credentials/`) resolve against your current project, while the compose file lives in one central place.
+The `--project-directory .` flag ensures relative volume mounts (`.`, `.credentials/`) resolve against your current project, while the compose file lives in one central place.
 
 ### docker-compose.yml (for reference)
 

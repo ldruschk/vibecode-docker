@@ -13,6 +13,8 @@
 | `README.md` | Usage examples, credential layout, repo initialization steps |
 | `.github/workflows/main.yml` | CI/CD — builds and pushes to ghcr.io |
 | `AI-CHANGELOG.md` | Record of AI-assisted changes |
+| `install-vibecode-function.sh` | Installs/updates the `vibecode()` shell function in `~/.zshrc` |
+| `vibecode-function.sh` | Canonical definition of the `vibecode()` shell function |
 
 ## Build & Run
 
@@ -21,30 +23,18 @@ docker build -t ghcr.io/ldruschk/vibecode-docker:latest .
 docker compose run --rm vibecode opencode
 ```
 
-Portable usage (from any project directory, without copying `docker-compose.yml`):
+## Installing the Shell Function
+
+The canonical function definition lives in [`vibecode-function.sh`](vibecode-function.sh). Run the install script to add or update it in `~/.zshrc`:
 
 ```bash
-# Add to .bashrc/.zshrc:
-vibecode() {
-  mkdir -p .credentials .credentials/.ssh
-  [ -f .credentials/age-keys.txt ] || touch .credentials/age-keys.txt
-  [ -f .credentials/github-token ] || touch .credentials/github-token
-  [ -f .credentials/AGENTS.md ] || cat > .credentials/AGENTS.md <<'EOF'
-# Credentials
-
-- `.ssh/` — SSH deploy key for git push
-- `age-keys.txt` — AGE private key for SOPS
-- `github-token` — GitHub PAT for gh CLI
-EOF
-  GITCONFIG="$HOME/.gitconfig" \
-  OPENCODE_CONFIG_DIR="$HOME/.config/opencode" \
-  OPENCODE_DATA_DIR="$HOME/.local/share/opencode" \
-  OPENCODE_STATE_DIR="$HOME/.local/state/opencode" \
-  sudo docker compose -f /path/to/vibecode-docker/docker-compose.yml \
-    --project-directory "$PWD" \
-    run --rm vibecode opencode "$@"
-}
+# Clone once, then:
+/path/to/vibecode-docker/install-vibecode-function.sh
+# Reload your shell:
+exec zsh
 ```
+
+The function auto-resolves the compose file path from the install script's own directory, so there's no need to edit any paths.
 
 ## Credential Layout (`.credentials/`)
 
