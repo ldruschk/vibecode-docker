@@ -36,6 +36,8 @@ exec zsh
 
 The function auto-resolves the compose file path from the install script's own directory, so there's no need to edit any paths.
 
+The function supports a `--name <value>` flag that is forwarded as `VIBECODE_NAME` into the container. Any other arguments are passed through to `opencode` unchanged.
+
 ## Credential Layout (`.credentials/`)
 
 ```
@@ -61,6 +63,7 @@ Path constants are parameterized via environment variables with defaults:
 | `OPENCODE_DATA_DIR` | `/home/lucas/.local/share/opencode` | `~/.local/share/opencode` | Auth, sessions |
 | `OPENCODE_STATE_DIR` | `/home/lucas/.local/state/opencode` | `~/.local/state/opencode` | Logs, state |
 | `GITCONFIG` | `/home/lucas/.gitconfig` | `~/.gitconfig:ro` | Git identity (persists across restarts) |
+| `VIBECODE_NAME` | — | — | Session name passed via `--name` flag to `vibecode()` |
 
 To persist git identity, add to your `docker-compose.yml`:
 ```yaml
