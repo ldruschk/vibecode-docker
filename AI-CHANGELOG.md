@@ -1,10 +1,5 @@
 # AI-CHANGELOG
 
-## 2026-05-01 — Add --name flag to vibecode function
-
-- Added `--name <value>` flag parsing in `vibecode-function.sh` — forwarded as `VIBECODE_NAME` env var to the Docker container.
-- Added `VIBECODE_NAME` to `docker-compose.yml` environment section so the variable reaches the container.
-
 ## 2026-04-27 — Initial setup
 
 - Created `Dockerfile` with Arch Linux base, filtered package install, opencode CLI via install script, crane binary download, non-root `vibecode` user.
